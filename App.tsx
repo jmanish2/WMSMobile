@@ -23,11 +23,23 @@ const App = () => {
   }, [hasPermission, requestPermission]);
 
   const codeScanner = useCodeScanner({
-    codeTypes: ['qr', 'ean-13'],
+    codeTypes: [
+      'qr',
+      'ean-13',
+      'ean-8',
+      'code-128',
+      'code-39',
+      'code-93',
+      'codabar',
+      'itf',
+      'upc-e',
+      'pdf-417',
+    ],
     onCodeScanned: codes => {
       // console.log(`Scanned ${codes.length} codes!`);
 
       for (const code of codes) {
+        console.log(code);
         // console.log(code.type, code.value); // <-- ❌ On iOS, we receive 'ean-13'
         setQrCode(code.value as string);
       }
@@ -50,7 +62,7 @@ const App = () => {
           onChangeText={() => {}}
           editable={false}
         />
-        <Button title="Scan QR Code" onPress={() => setQrCode('')} />
+        <Button title="Scan QR/Bar Code" onPress={() => setQrCode('')} />
       </SafeAreaView>
     );
   }
