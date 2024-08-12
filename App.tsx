@@ -1,118 +1,90 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  Camera,
+  useCameraDevice,
+  useCameraPermission,
+  useCodeScanner,
+} from 'react-native-vision-camera';
+import CameraOverlay from './src/components/CameraOverlay';
+import Button from './src/elements/Button';
+import Input from './src/elements/Input';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const device = useCameraDevice('back');
+  const {hasPermission, requestPermission} = useCameraPermission();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const [qrCode, setQrCode] = useState('');
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  useEffect(() => {
+    if (!hasPermission) {
+      requestPermission();
+    }
+  }, [hasPermission, requestPermission]);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: codes => {
+      // console.log(`Scanned ${codes.length} codes!`);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+      for (const code of codes) {
+        // console.log(code.type, code.value); // <-- ❌ On iOS, we receive 'ean-13'
+        setQrCode(code.value as string);
+      }
+    },
+  });
+
+  if (!hasPermission) {
+    return <PermissionsPage />;
+  }
+  if (device == null) {
+    return <NoCameraDeviceError />;
+  }
+
+  if (qrCode) {
+    return (
+      <SafeAreaView style={styles.screen}>
+        <Input
+          value={qrCode}
+          placeholder="Scanned qr code"
+          onChangeText={() => {}}
+          editable={false}
+        />
+        <Button title="Scan QR Code" onPress={() => setQrCode('')} />
+      </SafeAreaView>
+    );
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <CameraOverlay>
+      <Camera
+        codeScanner={codeScanner}
+        device={device}
+        isActive={true}
+        style={StyleSheet.absoluteFill}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    </CameraOverlay>
   );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default App;
+
+const PermissionsPage = () => {
+  return (
+    <View>
+      <Text>Permissions denied</Text>
+    </View>
+  );
+};
+
+const NoCameraDeviceError = () => {
+  return (
+    <View>
+      <Text>No camera device error</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  screen: {padding: 12, gap: 12},
+});
