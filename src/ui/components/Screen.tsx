@@ -14,5 +14,5 @@ const Screen: FC<ScreenProps> = ({children}) => {
 export default Screen;
 
 const styles = StyleSheet.create({
-  screen: {padding: 12, gap: 12, flex: 1},
+  screen: {padding: 12, gap: 12},
 });
