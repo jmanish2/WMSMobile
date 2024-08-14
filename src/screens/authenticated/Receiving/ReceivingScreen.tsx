@@ -1,16 +1,21 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import Screen from '../../../ui/components/Screen';
 import {Button, Card, Text} from 'react-native-paper';
+import { AuthenticatedStackNavigatorScreenProps } from '../../../types/navigation';
 
-const ReceivingScreen = () => {
+
+
+interface ReceivingScreenProps
+  extends AuthenticatedStackNavigatorScreenProps<'Receiving'> {}
+
+const ReceivingScreen:FC<ReceivingScreenProps> = () => {
   const cardData = [
     {title: 'By Shipment', screenName: 'ReceivingScreen'},
     {title: 'By Assests', screenName: 'ShippingScreen'},
   ];
   return (
     <Screen>
-      <View style={styles.container}>
         <View
           style={{
             display: 'flex',
@@ -31,7 +36,6 @@ const ReceivingScreen = () => {
             </TouchableOpacity>
           ))}
         </View>
-      </View>
     </Screen>
   );
 };
@@ -39,9 +43,7 @@ const ReceivingScreen = () => {
 export default ReceivingScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: '50%',
-  },
+ 
   cardContainer: {
     marginBottom: 16,
   },

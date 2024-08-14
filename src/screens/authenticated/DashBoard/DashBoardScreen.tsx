@@ -1,9 +1,14 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import Screen from '../../../ui/components/Screen';
 import {Button, Card, Text} from 'react-native-paper';
+import { AuthenticatedStackNavigatorScreenProps } from '../../../types/navigation';
 
-const DashBoardScreen = () => {
+
+interface DashboardScreenProps
+  extends AuthenticatedStackNavigatorScreenProps<'Dashboard'> {}
+
+const DashBoardScreen:FC<DashboardScreenProps> = () => {
   const cardData = [
     {title: 'Receiving', screenName: 'ReceivingScreen'},
     {title: 'Shipping', screenName: 'ShippingScreen'},

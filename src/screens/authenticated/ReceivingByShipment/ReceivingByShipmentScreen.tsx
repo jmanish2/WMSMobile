@@ -1,8 +1,10 @@
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {FC} from 'react';
 import Screen from '../../../ui/components/Screen';
 import {Button, Text} from 'react-native-paper';
 import RecivingCard from '../../../ui/widgets/RecivingCard';
+import {AuthenticatedStackNavigatorScreenProps} from '../../../types/navigation';
+
 interface Item {
   key: string;
   shipId: string;
@@ -12,6 +14,7 @@ interface Item {
   created: string;
   refID: string;
 }
+
 const items: Item[] = [
   {
     key: '1',
@@ -31,47 +34,45 @@ const items: Item[] = [
     created: 'Bob Smith, 2023-06-15',
     refID: 'REF002',
   },
-  
 ];
 
-const ReceivingByShipment = () => {
+interface ReceivingByShipmentScreenProps
+  extends AuthenticatedStackNavigatorScreenProps<'ReceivingByShipmeent'> {}
+
+const ReceivingByShipmentScreen: FC<ReceivingByShipmentScreenProps> = () => {
   return (
     <Screen>
-      <View style={styles.container}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text variant="headlineLarge">Receiving</Text>
-          <Button mode="contained">Back</Button>
-        </View>
-
-        <ScrollView >
-          {items.map(item => (
-            <RecivingCard
-              key={item.key}
-              shipID={item.shipId}
-              refID={item.refID}
-              shipFrom={item.shipForm}
-              status={item.status}
-              shipType={item.shipType}
-              created={item.created}
-            />
-          ))}
-        </ScrollView>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <Text variant="headlineLarge">Receiving</Text>
+        <Button mode="contained">Back</Button>
       </View>
+
+      <ScrollView>
+        {items.map(item => (
+          <RecivingCard
+            key={item.key}
+            shipID={item.shipId}
+            refID={item.refID}
+            shipFrom={item.shipForm}
+            status={item.status}
+            shipType={item.shipType}
+            created={item.created}
+          />
+        ))}
+      </ScrollView>
     </Screen>
   );
 };
 
-export default ReceivingByShipment;
+export default ReceivingByShipmentScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: '10%',
-  },
+
   cardContainer: {
     marginBottom: 16,
   },
