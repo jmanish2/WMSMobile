@@ -14,9 +14,10 @@ export const AuthenticatedNavigator = (): ReactElement => {
       <Stack.Screen name="Dashboard" component={DashBoardScreen} />
       <Stack.Screen name="Receiving" component={ReceivingScreen} />
       <Stack.Screen
-        name="ReceivingByShipmeent"
+        name="ReceivingByShipment"
         component={ReceivingByShipmentScreen}
       />
+    
     </Stack.Navigator>
   );
 };

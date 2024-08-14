@@ -9,7 +9,7 @@ import UnAuthenticatedNavigator from './UnAuthenticatedNavigator';
 export const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
 export const Navigator = (props: NavigationProps): ReactElement => {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   return (
     <NavigationContainer {...props}>

@@ -1,38 +1,47 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 import Screen from '../../../ui/components/Screen';
 import {Button, Card, Text} from 'react-native-paper';
-import { AuthenticatedStackNavigatorScreenProps } from '../../../types/navigation';
-
+import {
+  AuthenticatedStackNavigatorParamList,
+  AuthenticatedStackNavigatorScreenProps,
+} from '../../../types/navigation';
+import {useNavigation} from '@react-navigation/native';
 
 interface DashboardScreenProps
   extends AuthenticatedStackNavigatorScreenProps<'Dashboard'> {}
 
-const DashBoardScreen:FC<DashboardScreenProps> = () => {
+const DashBoardScreen: FC<DashboardScreenProps> = () => {
+  const navigation = useNavigation();
+
+  const handleCardPress = (screenName: string) => {
+    navigation.navigate(
+      screenName as keyof AuthenticatedStackNavigatorParamList,
+    );
+  };
   const cardData = [
-    {title: 'Receiving', screenName: 'ReceivingScreen'},
-    {title: 'Shipping', screenName: 'ShippingScreen'},
-    {title: 'Maintenance', screenName: 'MaintenanceScreen'}
+    {title: 'Receiving', screenName: 'Receiving'},
+    {title: 'Shipping', screenName: 'Shipping'},
+    {title: 'Maintenance', screenName: 'MaintenanceScreen'},
   ];
   return (
     <Screen>
-      <View style={styles.container}>
-        <Text variant="headlineLarge" style={styles.text}>
-          Menu
-        </Text>
-        {cardData.map((card, index) => (
-          <TouchableOpacity key={index} style={styles.cardContainer}>
-            <Card style={styles.card}>
-              <Card.Content style={styles.cardContent}>
-                <Text style={styles.cardTitle}>{card.title}</Text>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
-        ))}
-        <Button style={styles.button} mode="contained">
-          Login
-        </Button>
-      </View>
+      <Text variant="headlineSmall">Menu</Text>
+      {cardData.map((card, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.cardContainer}
+          onPress={() => handleCardPress(card.screenName)}>
+          <Card>
+            <Card.Content style={styles.cardContent}>
+              <Text>{card.title}</Text>
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
+      ))}
+      <Button style={styles.button} mode="contained">
+        Logout
+      </Button>
     </Screen>
   );
 };
@@ -40,26 +49,13 @@ const DashBoardScreen:FC<DashboardScreenProps> = () => {
 export default DashBoardScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: '50%',
-  },
   cardContainer: {
-    marginBottom: 16,
-  },
-  card: {
-    elevation: 4,
-  },
-  text: {
-    textAlign: 'center',
-    marginVertical: 16,
+    marginBottom: 8,
   },
   cardContent: {
-    alignItems: 'center', // Center horizontally
-    justifyContent: 'center', // Center vertically (if needed)
+    alignItems: 'center',
   },
-  cardTitle: {
-    fontSize: 18,
-  },
+
   button: {
     marginTop: 16,
   },
