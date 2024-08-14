@@ -1,9 +1,10 @@
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import Screen from '../../../ui/components/Screen';
 import {Button, Text} from 'react-native-paper';
 import RecivingCard from '../../../ui/widgets/RecivingCard';
 import {AuthenticatedStackNavigatorScreenProps} from '../../../types/navigation';
+import {useNavigation} from '@react-navigation/native';
 
 interface Item {
   key: string;
@@ -15,7 +16,7 @@ interface Item {
   refID: string;
 }
 
-const items: Item[] = [
+const initialItems: Item[] = [
   {
     key: '1',
     shipId: 'SH001',
@@ -34,25 +35,45 @@ const items: Item[] = [
     created: 'Bob Smith, 2023-06-15',
     refID: 'REF002',
   },
+  {
+    key: '3',
+    shipId: 'SH003',
+    shipType: 'Asset',
+    shipForm: 'Dock',
+    status: 'Pending',
+    created: 'Bob Smith, 2023-06-15',
+    refID: 'REF003',
+  },
+  {
+    key: '4',
+    shipId: 'SH004',
+    shipType: 'Asset',
+    shipForm: 'Dock',
+    status: 'Pending',
+    created: 'Bob Smith, 2023-06-15',
+    refID: 'REF004',
+  },
 ];
 
 interface ReceivingByShipmentScreenProps
-  extends AuthenticatedStackNavigatorScreenProps<'ReceivingByShipmeent'> {}
+  extends AuthenticatedStackNavigatorScreenProps<'ReceivingByShipment'> {}
 
 const ReceivingByShipmentScreen: FC<ReceivingByShipmentScreenProps> = () => {
+  const navigation = useNavigation();
+  const [items, setItems] = useState<Item[]>(initialItems);
+  const handleDeleteCard = (key: string) => {
+    setItems(prevItems => prevItems.filter(item => item.key !== key));
+  };
   return (
-    <Screen>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <Text variant="headlineLarge">Receiving</Text>
-        <Button mode="contained">Back</Button>
-      </View>
-
-      <ScrollView>
+    <ScrollView>
+      <Screen>
+        <View style={styles.container}>
+          <Text variant="headlineLarge">Receiving</Text>
+          <Button mode="contained" onPress={() => navigation.goBack()}>
+            Back
+          </Button>
+        </View>
+        <Text>Option : By Shipment</Text>
         {items.map(item => (
           <RecivingCard
             key={item.key}
@@ -62,32 +83,20 @@ const ReceivingByShipmentScreen: FC<ReceivingByShipmentScreenProps> = () => {
             status={item.status}
             shipType={item.shipType}
             created={item.created}
+            handleReceive={async () => handleDeleteCard(item.key)}
           />
         ))}
-      </ScrollView>
-    </Screen>
+      </Screen>
+    </ScrollView>
   );
 };
 
 export default ReceivingByShipmentScreen;
 
 const styles = StyleSheet.create({
-
-  cardContainer: {
-    marginBottom: 16,
-  },
-  card: {
-    elevation: 4,
-  },
-  text: {
-    textAlign: 'center',
-    marginVertical: 16,
-  },
-  cardContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardTitle: {
-    fontSize: 18,
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

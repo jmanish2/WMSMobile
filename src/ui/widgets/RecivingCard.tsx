@@ -9,6 +9,7 @@ interface RecivingCardProps {
   status: string;
   shipType: string;
   created: string;
+  handleReceive: () => {};
 }
 
 const RecivingCard: React.FC<RecivingCardProps> = ({
@@ -18,56 +19,47 @@ const RecivingCard: React.FC<RecivingCardProps> = ({
   shipType,
   created,
   status,
+  handleReceive,
 }) => {
   return (
     <View style={styles.container}>
       <Card>
         <Card.Title title="Shipment Details" titleVariant="titleMedium" />
         <Card.Content>
-          <View
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <Text variant="titleSmall">Shipment ID: </Text>
-            <Text>{shipID}</Text>
-            <Text variant="titleSmall">Reference ID: </Text>
-            <Text>{refID}</Text>
+          <View style={styles.shipmentView}>
+            <View style={styles.shipmentView}>
+              <Text variant="titleSmall">Shipment ID: </Text>
+              <Text>{shipID}</Text>
+            </View>
+            <View style={styles.shipmentView}>
+              <Text variant="titleSmall">Reference ID: </Text>
+              <Text>{refID}</Text>
+            </View>
+          </View>
+          <View style={styles.shipmentView}>
+            <View style={styles.shipmentView}>
+              <Text variant="titleSmall">Shipment Type: </Text>
+              <Text>{shipType}</Text>
+            </View>
+            <View style={styles.shipmentView}>
+              <Text variant="titleSmall"> Status: </Text>
+              <Text>{status}</Text>
+            </View>
           </View>
           <View
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <Text variant="titleSmall">Shipment Type: </Text>
-            <Text>{shipType}</Text>
-            <Text variant="titleSmall"> Status: </Text>
-            <Text>{status}</Text>
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
+            style={styles.shipFormView}>
             <Text variant="titleSmall">Ship From :</Text>
             <Text>{shipFrom}</Text>
           </View>
           <View
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
+            style={styles.shipFormView}>
             <Text variant="titleSmall">Created :</Text>
-            <Text>{created}</Text>
+            <Text style={styles.createdText}>{created}</Text>
           </View>
         </Card.Content>
 
         <Card.Actions>
-          <Button>Receive</Button>
+          <Button onPress={handleReceive}>Receive</Button>
           <Button>Cancel</Button>
         </Card.Actions>
       </Card>
@@ -79,6 +71,19 @@ export default RecivingCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 8,
+    marginTop: 4,
+    margin: 2,
   },
+  shipmentView: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  shipFormView:{
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  createdText:{
+    marginLeft: 2, marginTop: 1
+  }
 });

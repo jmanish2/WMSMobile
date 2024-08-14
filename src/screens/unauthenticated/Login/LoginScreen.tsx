@@ -1,9 +1,9 @@
 import React, {FC, useState} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {UnAuthenticatedStackNavigatorScreenProps} from '../../../types/navigation';
 import Screen from '../../../ui/components/Screen';
-import {Button, TextInput} from 'react-native-paper';
+import {Button, Text, TextInput} from 'react-native-paper';
 
 interface LoginScreenProps
   extends UnAuthenticatedStackNavigatorScreenProps<'Login'> {}
@@ -19,7 +19,7 @@ const LoginScreen: FC<LoginScreenProps> = () => {
 
   return (
     <Screen>
-      <Text variant="headlineLarge">Login</Text>
+      <Text variant="headlineSmall">Login</Text>
       <TextInput
         label="User ID"
         mode="outlined"
