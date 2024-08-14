@@ -1,7 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {type ReactElement} from 'react';
-import HomeScreen from '../../screens/authenticated/Home/HomeScreen';
 import {AuthenticatedStackNavigatorParamList} from '../../types/navigation';
+import DashBoardScreen from '../../screens/authenticated/DashBoard/DashBoardScreen';
+import ReceivingByShipmentScreen from '../../screens/authenticated/ReceivingByShipment/ReceivingByShipmentScreen';
+import ReceivingScreen from '../../screens/authenticated/Receiving/ReceivingScreen';
 
 const Stack =
   createNativeStackNavigator<AuthenticatedStackNavigatorParamList>();
@@ -9,7 +11,12 @@ const Stack =
 export const AuthenticatedNavigator = (): ReactElement => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Dashboard" component={DashBoardScreen} />
+      <Stack.Screen name="Receiving" component={ReceivingScreen} />
+      <Stack.Screen
+        name="ReceivingByShipmeent"
+        component={ReceivingByShipmentScreen}
+      />
     </Stack.Navigator>
   );
 };
