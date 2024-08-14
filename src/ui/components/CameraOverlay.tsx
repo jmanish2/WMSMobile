@@ -1,6 +1,6 @@
 import React, {PropsWithChildren} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import colors from '../theme/colors';
+import colors from '../../theme/colors';
 
 const CameraOverlay = ({children}: PropsWithChildren) => {
   const {width, height} = Dimensions.get('window');
