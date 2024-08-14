@@ -6,15 +6,14 @@ import {
   useCameraPermission,
   useCodeScanner,
 } from 'react-native-vision-camera';
-import CameraOverlay from './src/ui/components/CameraOverlay';
 import Button from './src/ui/elements/Button';
-import Input from './src/ui/elements/Input';
 
 const App = () => {
   const device = useCameraDevice('back');
   const {hasPermission, requestPermission} = useCameraPermission();
 
-  const [qrCode, setQrCode] = useState('');
+  const [captureBarCodes, setCaptureBarCodes] = useState(false);
+  const [qrCode, setQrCode] = useState<Array<string>>([]);
 
   useEffect(() => {
     if (!hasPermission) {
@@ -36,12 +35,12 @@ const App = () => {
       'pdf-417',
     ],
     onCodeScanned: codes => {
-      // console.log(`Scanned ${codes.length} codes!`);
+      if (captureBarCodes) {
+        if (codes.length > 0) {
+          const newCodes = codes.map(barcode => barcode.value);
 
-      for (const code of codes) {
-        console.log(code);
-        // console.log(code.type, code.value); // <-- ❌ On iOS, we receive 'ean-13'
-        setQrCode(code.value as string);
+          setQrCode([...new Set([...newCodes])] as Array<string>);
+        }
       }
     },
   });
@@ -53,29 +52,42 @@ const App = () => {
     return <NoCameraDeviceError />;
   }
 
-  if (qrCode) {
+  if (qrCode.length && captureBarCodes) {
     return (
       <SafeAreaView style={styles.screen}>
-        <Input
-          value={qrCode}
-          placeholder="Scanned qr code"
-          onChangeText={text => setQrCode(text)}
-          selectTextOnFocus
+        {qrCode.map(code => {
+          return (
+            <View key={code}>
+              <Text selectable>{code}</Text>
+            </View>
+          );
+        })}
+        <Button
+          title="Scan QR/Bar Code"
+          onPress={() => {
+            setCaptureBarCodes(false);
+            setQrCode([]);
+          }}
         />
-        <Button title="Scan QR/Bar Code" onPress={() => setQrCode('')} />
       </SafeAreaView>
     );
   }
 
   return (
-    <CameraOverlay>
+    <>
       <Camera
         codeScanner={codeScanner}
         device={device}
         isActive={true}
         style={StyleSheet.absoluteFill}
       />
-    </CameraOverlay>
+      <View style={styles.floatingButtons}>
+        <Button
+          title="Capture BarCodes"
+          onPress={() => setCaptureBarCodes(true)}
+        />
+      </View>
+    </>
   );
 };
 
@@ -99,4 +111,11 @@ const NoCameraDeviceError = () => {
 
 const styles = StyleSheet.create({
   screen: {padding: 12, gap: 12},
+  floatingButtons: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });

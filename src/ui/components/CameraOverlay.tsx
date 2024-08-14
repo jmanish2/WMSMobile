@@ -4,7 +4,7 @@ import colors from '../../theme/colors';
 
 const CameraOverlay = ({children}: PropsWithChildren) => {
   const {width, height} = Dimensions.get('window');
-  const focusSize = 240;
+  const focusSize = 600;
 
   return (
     <View style={styles.container}>
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
   },
   middleContainer: {
     flexDirection: 'row',
-    height: 240,
+    height: 600,
   },
   focusArea: {
-    width: 240,
-    height: 240,
+    width: 600,
+    height: 600,
     backgroundColor: colors.transparent,
   },
 });
