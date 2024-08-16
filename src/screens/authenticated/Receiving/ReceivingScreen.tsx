@@ -14,8 +14,8 @@ interface ReceivingScreenProps
 const ReceivingScreen: FC<ReceivingScreenProps> = () => {
   const navigation = useNavigation();
   const cardData = [
-    {title: 'By Shipment', screenName: 'ReceivingByShipment'},
-    {title: 'By Assests', screenName: 'ShippingScreen'},
+    {key:1,title: 'By Shipment', screenName: 'ReceivingByOptionScreen'},
+    {key:2,title: 'By Assests', screenName: 'ReceivingByOptionScreen'},
   ];
   return (
     <Screen>
@@ -33,6 +33,7 @@ const ReceivingScreen: FC<ReceivingScreenProps> = () => {
             onPress={() =>
               navigation.navigate(
                 card.screenName as keyof AuthenticatedStackNavigatorParamList,
+                {cardTitle: card.title,key:card.key},
               )
             }>
             <Card>
