@@ -1,66 +1,71 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {FC} from 'react';
-import Screen from '../../../ui/components/Screen';
-import {Button, Card, Text} from 'react-native-paper';
-import {
-  AuthenticatedStackNavigatorParamList,
-  AuthenticatedStackNavigatorScreenProps,
-} from '../../../types/navigation';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { RNCamera } from 'react-native-camera';
 
-interface ReceivingScreenProps
-  extends AuthenticatedStackNavigatorScreenProps<'Receiving'> {}
+// Define the type for the barcode read event
+interface BarCodeReadEvent {
+  data: string;
+  type: string;
+}
 
-const ReceivingScreen: FC<ReceivingScreenProps> = () => {
-  const navigation = useNavigation();
-  const cardData = [
-    {key:1,title: 'By Shipment', screenName: 'ReceivingByOptionScreen'},
-    {key:2,title: 'By Assests', screenName: 'ReceivingByOptionScreen'},
-  ];
+const MultiQRCodeScanner = () => {
+  const [barcodes, setBarcodes] = useState<string[]>([]);
+  const [scannedCodes, setScannedCodes] = useState<Set<string>>(new Set());
+
+  // Correctly typed onBarCodeRead handler
+  const onBarCodeRead = (event: BarCodeReadEvent) => {
+    try {
+      const { data, type } = event;
+      if (type === RNCamera.Constants.BarCodeType.qr) {
+        if (!scannedCodes.has(data)) {
+          setScannedCodes((prevSet) => new Set(prevSet).add(data));
+          setBarcodes((prevBarcodes) => [...prevBarcodes, data]);
+        }
+      }
+    } catch (error) {
+      console.error('Error processing barcode:', error);
+    }
+  };
+
   return (
-    <Screen>
-      <View style={styles.container}>
-        <Text variant="headlineLarge">Receiving</Text>
-        <Button mode="contained" onPress={() => navigation.goBack()}>
-          Back
-        </Button>
-      </View>
-      <View style={styles.cardContainer}>
-        {cardData.map((card, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.cardContainer}
-            onPress={() =>
-              navigation.navigate(
-                card.screenName as keyof AuthenticatedStackNavigatorParamList,
-                {cardTitle: card.title,key:card.key},
-              )
-            }>
-            <Card>
-              <Card.Content style={styles.cardContent}>
-                <Text>{card.title}</Text>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </Screen>
+    <View style={styles.container}>
+      <RNCamera
+        style={styles.preview}
+        type={RNCamera.Constants.Type.back}
+        onBarCodeRead={onBarCodeRead} // Update here
+      >
+        {barcodes.length > 0 && (
+          <View style={styles.barcodeContainer}>
+            {barcodes.map((barcode, index) => (
+              <Text key={index} style={styles.barcodeText}>
+                {barcode}
+              </Text>
+            ))}
+          </View>
+        )}
+      </RNCamera>
+    </View>
   );
 };
 
-export default ReceivingScreen;
-
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 1,
   },
-  cardContainer: {
-    marginBottom: 16,
+  preview: {
+    flex: 1,
   },
-
-  cardContent: {
-    alignItems: 'center',
+  barcodeContainer: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 10,
+  },
+  barcodeText: {
+    fontSize: 16,
+    color: 'black',
   },
 });
+
+export default MultiQRCodeScanner;
