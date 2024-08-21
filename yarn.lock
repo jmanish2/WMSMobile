@@ -2351,6 +2351,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/image-editor@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "@react-native-community/image-editor@npm:4.2.1"
+  peerDependencies:
+    react-native: ">=0.57.0"
+  peerDependenciesMeta:
+    react-native:
+      optional: true
+  checksum: 0fdbbab0ab99cf2d9412a722c7528188a98bdf2bbe5adb1e6ad5c92c08702d06782af325ba94698b562d7bcd8535354d5db8fbee92d6b3c1ea107a7a26402f9e
+  languageName: node
+  linkType: hard
+
 "@react-native-community/netinfo@npm:^11.3.2":
   version: 11.3.2
   resolution: "@react-native-community/netinfo@npm:11.3.2"
@@ -9576,6 +9588,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@react-native-community/image-editor": ^4.2.1
     "@react-native-community/netinfo": ^11.3.2
     "@react-native-ml-kit/barcode-scanning": ^1.4.1
     "@react-native/babel-preset": 0.74.87

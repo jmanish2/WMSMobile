@@ -12,6 +12,7 @@
     "adb": "adb reverse tcp:8081 tcp:8081"
   },
   "dependencies": {
+    "@react-native-community/image-editor": "^4.2.1",
     "@react-native-community/netinfo": "^11.3.2",
     "@react-native-ml-kit/barcode-scanning": "^1.4.1",
     "@react-navigation/native": "^6.1.18",
