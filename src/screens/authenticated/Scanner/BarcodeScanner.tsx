@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
-import { View, Button, Image, StyleSheet, Alert } from 'react-native';
-import { launchCamera, launchImageLibrary, Asset, CameraOptions, ImagePickerResponse } from 'react-native-image-picker';
-import { request, PERMISSIONS } from 'react-native-permissions';
-import MLKitBarcodeScanner, { Barcode } from '@react-native-ml-kit/barcode-scanning';
+import React, {useState} from 'react';
+import {View, Button, Image, StyleSheet, Alert} from 'react-native';
+import {
+  launchCamera,
+  launchImageLibrary,
+  Asset,
+  CameraOptions,
+  ImagePickerResponse,
+} from 'react-native-image-picker';
+import {request, PERMISSIONS} from 'react-native-permissions';
+import MLKitBarcodeScanner, {
+  Barcode,
+} from '@react-native-ml-kit/barcode-scanning';
 import ImageEditor from '@react-native-community/image-editor';
-import { Text } from 'react-native-paper';
+import {Text} from 'react-native-paper';
+import {AuthenticatedStackNavigatorScreenProps} from '../../../types/navigation';
 
-const ImagePickerExample: React.FC = () => {
+interface BarCodeScannerProps
+  extends AuthenticatedStackNavigatorScreenProps<'BarCodeScanner'> {}
+
+const BarCodeScanner: React.FC<BarCodeScannerProps> = () => {
   const [imageUri, setImageUri] = useState<string | undefined>();
   const [barcodes, setBarcodes] = useState<string[]>([]);
 
@@ -23,20 +35,33 @@ const ImagePickerExample: React.FC = () => {
   };
 
   // Crop and scan image
-  const cropAndScanImage = async (uri: string, width: number, height: number) => {
+  const cropAndScanImage = async (
+    uri: string,
+    width: number,
+    height: number,
+  ) => {
     try {
       // Define crop sections with offset and size
       const cropSections = [
-        { offset: { x: 0, y: 0 }, size: { width: width / 2, height: height / 2 } },
-        { offset: { x: width / 2, y: 0 }, size: { width: width / 2, height: height / 2 } },
-        { offset: { x: 0, y: height / 2 }, size: { width: width / 2, height: height / 2 } },
-        { offset: { x: width / 2, y: height / 2 }, size: { width: width / 2, height: height / 2 } },
+        {offset: {x: 0, y: 0}, size: {width: width / 2, height: height / 2}},
+        {
+          offset: {x: width / 2, y: 0},
+          size: {width: width / 2, height: height / 2},
+        },
+        {
+          offset: {x: 0, y: height / 2},
+          size: {width: width / 2, height: height / 2},
+        },
+        {
+          offset: {x: width / 2, y: height / 2},
+          size: {width: width / 2, height: height / 2},
+        },
       ];
 
       const barcodeResults: string[] = [];
 
       for (const section of cropSections) {
-        const { offset, size } = section;
+        const {offset, size} = section;
 
         const cropData = {
           offset: {
@@ -57,7 +82,9 @@ const ImagePickerExample: React.FC = () => {
           const croppedImageUri = cropResult.uri;
 
           // Scan the cropped image
-          const results: Barcode[] = await MLKitBarcodeScanner.scan(croppedImageUri);
+          const results: Barcode[] = await MLKitBarcodeScanner.scan(
+            croppedImageUri,
+          );
           results.forEach(barcode => {
             if (barcode.value) {
               barcodeResults.push(barcode.value);
@@ -130,13 +157,13 @@ const ImagePickerExample: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Button title="Take a Photo" onPress={openCamera} />
+      <Button title="Take a Photo" onPress={openCamera} />
       <Button title="Select from Gallery" onPress={openImageLibrary} />
       <Button title="Reset" onPress={reset} />
-      {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+      {imageUri && <Image source={{uri: imageUri}} style={styles.image} />}
       <Text style={styles.barcodeText}>
         Scanned Barcodes: {barcodes.join(', ')}
-      </Text> */}
+      </Text>
     </View>
   );
 };
@@ -159,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImagePickerExample;
+export default BarCodeScanner;
