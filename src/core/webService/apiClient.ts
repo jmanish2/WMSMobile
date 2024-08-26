@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {useAuthStore} from '../hooks/store/useAuthStore';
+import {useAuthStore} from '../../hooks/store/useAuthStore';
 
 // Keeping the local copy to avoid accessing the local storage for each API call
 let accessToken: string | null = null;
