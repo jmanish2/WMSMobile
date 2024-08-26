@@ -1,7 +1,7 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {FC} from 'react';
 import Screen from '../../../ui/components/Screen';
-import {Button, Card, Text} from 'react-native-paper';
+import {Button, Card, Switch, Text} from 'react-native-paper';
 import {
   AuthenticatedStackNavigatorParamList,
   AuthenticatedStackNavigatorScreenProps,
@@ -13,6 +13,10 @@ interface ReceivingScreenProps
 
 const ReceivingScreen: FC<ReceivingScreenProps> = () => {
   const navigation = useNavigation();
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
   const cardData = [
     {key: 1, title: 'By Shipment', screenName: 'ReceivingByOptionScreen'},
     {key: 2, title: 'By Assets', screenName: 'ReceivingByOptionScreen'},
@@ -25,6 +29,7 @@ const ReceivingScreen: FC<ReceivingScreenProps> = () => {
         <Button mode="contained" onPress={() => navigation.goBack()}>
           Back
         </Button>
+        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
       </View>
       <View style={styles.cardContainer}>
         {cardData.map((card, index) => (
