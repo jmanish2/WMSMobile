@@ -20,7 +20,8 @@ export type UnAuthenticatedStackNavigatorParamList = {
 export type AuthenticatedStackNavigatorParamList = {
   Dashboard: undefined;
   Receiving: undefined;
-  ReceivingByShipment: undefined;
+  ReceivingByOptionScreen: {cardTitle?: string ,key?:number};
+  ReceivingByAssests: undefined;
 };
 
 export type RootNavigatorScreenProps<T extends keyof RootNavigatorParamList> =
