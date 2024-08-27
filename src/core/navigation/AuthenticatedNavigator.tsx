@@ -4,7 +4,7 @@ import {AuthenticatedStackNavigatorParamList} from '../../types/navigation';
 import DashBoardScreen from '../../screens/authenticated/DashBoard/DashBoardScreen';
 import ReceivingByOptionScreen from '../../screens/authenticated/ReceivingScreenByOption/ReceivingScreenByOption';
 import ReceivingScreen from '../../screens/authenticated/Receiving/ReceivingScreen';
-
+import BarCodeScanner from '../../screens/authenticated/Scanner/BarcodeScanner';
 const Stack =
   createNativeStackNavigator<AuthenticatedStackNavigatorParamList>();
 
@@ -17,7 +17,7 @@ export const AuthenticatedNavigator = (): ReactElement => {
         name="ReceivingByOptionScreen"
         component={ReceivingByOptionScreen}
       />
-    
+      <Stack.Screen name="BarCodeScanner" component={BarCodeScanner} />
     </Stack.Navigator>
   );
 };

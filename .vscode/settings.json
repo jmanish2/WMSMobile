@@ -4,5 +4,6 @@
 		"netinfo",
 		"tanstack",
 		"zustand"
-	]
+	],
+	"java.configuration.updateBuildConfiguration": "interactive"
 }

@@ -22,6 +22,7 @@ export type AuthenticatedStackNavigatorParamList = {
   Receiving: undefined;
   ReceivingByOptionScreen: {cardTitle?: string ,key?:number};
   ReceivingByAssests: undefined;
+  BarCodeScanner:undefined;
 };
 
 export type RootNavigatorScreenProps<T extends keyof RootNavigatorParamList> =
