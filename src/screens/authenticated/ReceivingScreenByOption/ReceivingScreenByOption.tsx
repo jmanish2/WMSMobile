@@ -228,12 +228,14 @@ const ReceivingByOptionScreen: FC<ReceivingByOptionScreenProps> = () => {
       <Screen>
         <View style={styles.container}>
           <Text variant="headlineLarge">Receiving</Text>
-          <Button mode="contained" onPress={() => navigation.goBack()}>
-            Back
-          </Button>
-          <Button mode="contained" onPress={handleScanner}>
-            Scan
-          </Button>
+          <View style={{display: 'flex', flexDirection: 'row', gap: 10}}>
+            <Button mode="contained" onPress={() => navigation.goBack()}>
+              Back
+            </Button>
+            <Button mode="contained" onPress={handleScanner}>
+              Scan
+            </Button>
+          </View>
         </View>
         <Text>Option: {cardTitle}</Text>
         {key === 1 ? (
